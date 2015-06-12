@@ -44,7 +44,7 @@ public class servletBuscaProd extends HttpServlet {
            DaoCategoria catd = new DaoCategoria();
            Categoria c=new Categoria();
             try {
-                request.setAttribute("lista", catd.buscaLista());
+                request.setAttribute("lista", catd.buscaLista());//lista categorias
                    // c=catd.buscaLista().get(0);
             } catch (SQLException ex) {
                 Logger.getLogger(servletLogar.class.getName()).log(Level.SEVERE, null, ex);

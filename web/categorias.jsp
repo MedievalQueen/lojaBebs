@@ -1,22 +1,16 @@
 <%-- 
-    Document   : centerContentTeste
-    Created on : 05/05/2015, 12:35:40
-    Author     : Alexandre
+    Document   : categorias
+    Created on : Jun 11, 2015, 2:07:29 PM
+    Author     : Ina
 --%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <div class="center_content">
     <form action="servletListaProd" method="POST" onsubmit="return validacadastroentrada(this);" >  
-        <h2>Categoria: 
-
-            <SELECT NAME = "cat">
-                <option value="todos" selected>Todas Categorias</option>
-                <c:forEach var="l" items="${lista}">
-                    <option value="${l.idCategoria}"><c:out value="${l.nome}"/></option></br>
-                </c:forEach>
-            </SELECT></h2>
+        <input type="hidden" name="cat" value="codCat">
         <h2>Ordernar por: 
 
             <SELECT NAME = "ordem">
@@ -30,9 +24,13 @@
     </br></br>	
     <!-- Start of Main Content Area -->
     <div id="main_content">
+
         <div class="h_divider">&nbsp;</div>
+
+
         <!-- Start Left Sub Item -->
         <div class="sub_left">
+
 
             <c:forEach var="p" items="${produtos}">
                 <div class="sub_items_header">

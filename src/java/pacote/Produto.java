@@ -21,7 +21,15 @@ public class Produto implements Serializable {
     private int status;
     private Categoria categoria;
     private Estoque estoque;
-    private String imagem;
+    private String imagem;    
+    
+    public int getIdProduto() {
+        return idProduto;
+    }
+
+    public void setIdProduto(int idProduto) {
+        this.idProduto = idProduto;
+    }
 
     public String getImagem() {
         return imagem;
@@ -31,16 +39,6 @@ public class Produto implements Serializable {
         this.imagem = imagem;
     }
 
-   // private List<Imagem> imagens;
-
-  /*  public List<Imagem> getImagens() {
-        return imagens;
-    }
-
-    public void setImagens(List<Imagem> imagens) {
-        this.imagens = imagens;
-    }
-*/
     public Produto() {
     }
 
@@ -104,9 +102,5 @@ public class Produto implements Serializable {
 
     public void setEstoque(Estoque estoque) {
         this.estoque = estoque;
-    }
-    
-   
-    
-    
+    }    
 }

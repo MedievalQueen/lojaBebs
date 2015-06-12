@@ -5,7 +5,6 @@
  */
 
 import Dao.DaoCategoria;
-import Dao.DaoProduto;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -24,8 +23,8 @@ import pacote.Categoria;
  *
  * @author Ina
  */
-@WebServlet(urlPatterns = {"/servletListaProd"})
-public class servletListaProd extends HttpServlet {
+@WebServlet(urlPatterns = {"/servletMenuEsq"})
+public class servletMenuEsq extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,26 +39,21 @@ public class servletListaProd extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-
-            DaoProduto dp=new DaoProduto();
-           // dp.busca(request.getParameter("cat"), request.getParameter("ordem"));
-           // DaoCategoria catd = new DaoCategoria();
+              DaoCategoria catd = new DaoCategoria();
            Categoria c=new Categoria();
-            
-             request.setAttribute("produtos", dp.busca(request.getParameter("cat"), request.getParameter("ordem")));
-            //  request.setAttribute("lista", catd.buscaLista());
-             
-              out.println(request.getParameter("cat"));
-            out.print(request.getParameter("ordem"));
-                        
-              HttpSession session = request.getSession();
-            session.setAttribute("redir", "produtos");
-             RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+            try {
+                request.setAttribute("lista", catd.buscaLista());
+                   // c=catd.buscaLista().get(0);
+            } catch (SQLException ex) {
+                Logger.getLogger(servletLogar.class.getName()).log(Level.SEVERE, null, ex);
+                
+            }           
+           //  HttpSession session = request.getSession();
+          //  session.setAttribute("redir", "cadastroprod");
+            //out.println(c.getNome());
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/leftContent.jsp");
           //  <c:set var="redir" value="cadastroprod" scope="session" />  
             rd.forward(request, response);  
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(servletListaProd.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

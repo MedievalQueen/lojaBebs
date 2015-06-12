@@ -64,9 +64,9 @@ public class servletCadastrarProd extends HttpServlet {
             p.setValor(Float.valueOf(request.getParameter("valor")));
             p.setQuantidade(Integer.valueOf(request.getParameter("qtd")));
             p.setStatus(1);
-            // FAZER Conexao DAO passando cliente
-            DaoProduto daoprod= new DaoProduto();
-            int idp=daoprod.add(p); 
+            
+           
+            
             //--------------------UPLOAD IMAGEM----------------------
             final String path = request.getParameter("destino");
             final Part filePart = request.getPart("arq");
@@ -89,6 +89,11 @@ public class servletCadastrarProd extends HttpServlet {
                 }
               // String s=path+"\\"+fileName;
                 String s="images/"+fileName;
+                
+                p.setImagem(s);
+                 DaoProduto daoprod= new DaoProduto();
+                 int idp=daoprod.add(p); 
+                
                 Imagem im=new Imagem();
                 im.setFoto(s);
                 im.setIdProduto(idp);
@@ -96,7 +101,7 @@ public class servletCadastrarProd extends HttpServlet {
                 DaoImagem daoi=new DaoImagem();
                 daoi.add(im);
 
-                RequestDispatcher rd = getServletContext().getRequestDispatcher("/servletLogar");
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/servletLogar");
             rd.forward(request,response);
               //  LOGGER.log(Level.INFO, "File{0}being uploaded to {1}", 
                   //      new Object[]{fileName, path});
@@ -121,31 +126,6 @@ public class servletCadastrarProd extends HttpServlet {
                     writer.close();
                 }
             }
-          
-            /*
-            //pegar id produto e inserir imagem com id produto
-            InputStream inputStream = null; // input stream of the upload file
-            // obtains the upload file part in this multipart request
-            Part filePart = request.getPart("arq");
-            if (filePart != null) {       
-                // obtains input stream of the upload file
-                inputStream = filePart.getInputStream();
-            }
-            Imagem1 im=new Imagem1();
-            im.setIdProduto(13);
-          //  im.setFoto((Blob) inputStream);
-            DaoImagem1 daoi=new DaoImagem1();
-            try {
-                daoi.add(im,inputStream);
-            } catch (SQLException ex) {
-                Logger.getLogger(servletCadastrarProd1.class.getName()).log(Level.SEVERE, null, ex);
-            }     */       
-            //if(inseriu de boa){
-           // RequestDispatcher rd = getServletContext().getRequestDispatcher("/servletLogar");
-           // rd.forward(request,response);
-            //}else{
-            
-            //}
         }
     }
 

@@ -24,8 +24,8 @@ import pacote.Categoria;
  *
  * @author Ina
  */
-@WebServlet(urlPatterns = {"/servletListaProd"})
-public class servletListaProd extends HttpServlet {
+@WebServlet(urlPatterns = {"/servletBuscaCat"})
+public class servletBuscaCat extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,26 +40,25 @@ public class servletListaProd extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-
-            DaoProduto dp=new DaoProduto();
-           // dp.busca(request.getParameter("cat"), request.getParameter("ordem"));
+           
+            DaoProduto dp = new DaoProduto();
            // DaoCategoria catd = new DaoCategoria();
-           Categoria c=new Categoria();
+            Categoria c = new Categoria();
+
+            request.setAttribute("produtos", dp.busca(request.getParameter("id"), request.getParameter("ordem")));
+           // request.setAttribute("lista", catd.buscaLista());
+
+            out.println(request.getParameter("id"));
+          //  out.print(request.getParameter("ordem"));
             
-             request.setAttribute("produtos", dp.busca(request.getParameter("cat"), request.getParameter("ordem")));
-            //  request.setAttribute("lista", catd.buscaLista());
-             
-              out.println(request.getParameter("cat"));
-            out.print(request.getParameter("ordem"));
-                        
-              HttpSession session = request.getSession();
+            HttpSession session = request.getSession();
             session.setAttribute("redir", "produtos");
-             RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
-          //  <c:set var="redir" value="cadastroprod" scope="session" />  
-            rd.forward(request, response);  
             
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+            rd.forward(request, response);
+ 
         } catch (SQLException ex) {
-            Logger.getLogger(servletListaProd.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(servletBuscaCat.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
