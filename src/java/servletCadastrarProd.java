@@ -91,9 +91,20 @@ public class servletCadastrarProd extends HttpServlet {
                 String s="images/"+fileName;
                 
                 p.setImagem(s);
+                out.println(p.getCategoria().getIdCategoria());
+                 out.println(p.getNome());
+                 out.println(p.getDescricao());out.println(p.getValor());out.println(p.getQuantidade());
+                 out.println(p.getStatus());
+                 out.println(p.getImagem());
                  DaoProduto daoprod= new DaoProduto();
                  int idp=daoprod.add(p); 
+               // out.println(request.getParameter("id"));
                 
+                 
+                 
+                 
+                 
+                 
                 Imagem im=new Imagem();
                 im.setFoto(s);
                 im.setIdProduto(idp);

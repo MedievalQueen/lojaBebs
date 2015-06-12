@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import pacote.Categoria;
-import pacote.Imagem;
 import pacote.Produto;
 
 /**
@@ -30,7 +29,7 @@ public class DaoProduto {
     
     public int add(Produto p) {
         		try {
-			String query = "INSERT INTO Produto(idCategoria, nome, descricao, valor, quantidade, status) VALUES(?,?,?,?,?,?)";
+			String query = "INSERT INTO Produto(idCategoria, nome, descricao, valor, quantidade, status, imagem) VALUES(?,?,?,?,?,?,?)";
 			con = ConnectionFactory.getConnection();
 			ptmt = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
                         
@@ -40,6 +39,8 @@ public class DaoProduto {
                         ptmt.setFloat(4, p.getValor());
 			ptmt.setInt(5, p.getQuantidade());
                         ptmt.setInt(6, p.getStatus());
+                        ptmt.setString(7, p.getImagem());
+                        
                         int affectedRows = ptmt.executeUpdate();
                         if (affectedRows == 0) {
                             throw new SQLException("Creating user failed, no rows affected.");
@@ -94,11 +95,6 @@ public class DaoProduto {
                   
                     p.setImagem(resultSet.getString("foto"));
 
-                   /* Imagem i=new Imagem();
-                    i.setFoto(resultSet.getString("foto"));
-                    List<Imagem> imagens= new ArrayList<>();
-                    imagens.add(i);
-                    p.setImagens(imagens);*/
                     
                     lista.add(p);  
                 }  
