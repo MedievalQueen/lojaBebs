@@ -24,8 +24,8 @@ import pacote.Categoria;
  *
  * @author Ina
  */
-@WebServlet(urlPatterns = {"/servletBuscaCat"})
-public class servletBuscaCat extends HttpServlet {
+@WebServlet(urlPatterns = {"/servletCategoria"})
+public class servletCategoria extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,7 +39,45 @@ public class servletBuscaCat extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        
+        String action = request.getParameter("action");
+
+        if ("listacat".equals(action)){
+            try (PrintWriter out = response.getWriter()) {
+                /* TODO output your page here. You may use following sample code. */
+               DaoCategoria catd = new DaoCategoria();
+               Categoria c=new Categoria();
+                try {
+                    request.setAttribute("lista", catd.buscaLista());
+                       // c=catd.buscaLista().get(0);
+                } catch (SQLException ex) {
+                    Logger.getLogger(servletLogar.class.getName()).log(Level.SEVERE, null, ex);
+
+                }           
+                 HttpSession session = request.getSession();
+                session.setAttribute("redir", "cadastroprod");
+                //out.println(c.getNome());
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+              //  <c:set var="redir" value="cadastroprod" scope="session" />  
+                rd.forward(request, response);  
+
+            }
+        }
+        if ("cadastracat".equals(action)){
+            Categoria c = new Categoria();
+            c.setNome(request.getParameter("categoria"));
+            c.setStatus(1);
+            //tratar acentuacao
+            // FAZER Conexao DAO passando cat
+            DaoCategoria daoc= new DaoCategoria();
+            daoc.add(c);
+            
+            //if(inseriu de boa){
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+            rd.forward(request,response);
+        }
+        if ("buscamenuleft".equals(action)){
+            try (PrintWriter out = response.getWriter()) {
            
             DaoProduto dp = new DaoProduto();
            // DaoCategoria catd = new DaoCategoria();
@@ -57,9 +95,11 @@ public class servletBuscaCat extends HttpServlet {
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
             rd.forward(request, response);
  
-        } catch (SQLException ex) {
-            Logger.getLogger(servletBuscaCat.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(servletCategoria.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

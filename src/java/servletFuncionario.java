@@ -4,28 +4,20 @@
  * and open the template in the editor.
  */
 
-import Dao.DaoCategoria;
-import Dao.DaoProduto;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import pacote.Categoria;
 
 /**
  *
  * @author Ina
  */
-@WebServlet(urlPatterns = {"/servletListaProd"})
-public class servletListaProd extends HttpServlet {
+@WebServlet(urlPatterns = {"/servletFuncionario"})
+public class servletFuncionario extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,26 +32,16 @@ public class servletListaProd extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-
-            DaoProduto dp=new DaoProduto();
-           // dp.busca(request.getParameter("cat"), request.getParameter("ordem"));
-           // DaoCategoria catd = new DaoCategoria();
-           Categoria c=new Categoria();
-            
-             request.setAttribute("produtos", dp.busca(request.getParameter("cat"), request.getParameter("ordem")));
-            //  request.setAttribute("lista", catd.buscaLista());
-             
-              out.println(request.getParameter("cat"));
-            out.print(request.getParameter("ordem"));
-                        
-              HttpSession session = request.getSession();
-            session.setAttribute("redir", "produtos");
-             RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
-          //  <c:set var="redir" value="cadastroprod" scope="session" />  
-            rd.forward(request, response);  
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(servletListaProd.class.getName()).log(Level.SEVERE, null, ex);
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet servletFuncionario</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet servletFuncionario at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 

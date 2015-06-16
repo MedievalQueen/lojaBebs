@@ -8,7 +8,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <div class="center_content">
-    <form action="servletListaProd" method="POST" onsubmit="return validacadastroentrada(this);" >  
+    <form action="servletProduto?action=listaprod" method="POST" onsubmit="return validacadastroentrada(this);" >  
         <h2>Categoria: 
 
             <SELECT NAME = "cat">

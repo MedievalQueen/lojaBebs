@@ -12,7 +12,7 @@
       <div class="title_box">Categorias</div>
       <ul class="left_menu">
           <c:forEach var="l" items="${lista}"> 
-              <li class="even"><a href="servletBuscaCat?id=${l.idCategoria}" formmethod="post" ><c:out value="${l.nome}"/></a></li>
+              <li class="even"><a href="servletCategoria?action=buscamenuleft&id=${l.idCategoria}" formmethod="post" ><c:out value="${l.nome}"/></a></li>
          </c:forEach>
       </ul>
     </div>

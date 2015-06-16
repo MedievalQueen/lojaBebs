@@ -18,7 +18,7 @@
 				<td>
 				<h1 >Cadastre um novo Produto</h1></br>
 					
-				    <form action="servletCadastrarProd" method="POST" onsubmit="return validacadastroentrada(this);" enctype="multipart/form-data" >	
+				    <form action="servletProduto?action=cadastrap" method="POST" onsubmit="return validacadastroentrada(this);" enctype="multipart/form-data" >	
 					<table>		
                                             <tr>	<td> Produto: </td>
 							<td>
