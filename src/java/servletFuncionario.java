@@ -4,13 +4,22 @@
  * and open the template in the editor.
  */
 
+import Dao.DaoFuncionario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import pacote.Funcionario;
 
 /**
  *
@@ -31,18 +40,64 @@ public class servletFuncionario extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet servletFuncionario</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet servletFuncionario at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+       
+            String action = request.getParameter("action");
+
+          PrintWriter out = response.getWriter();
+
+            if ("pesquisa".equals(action)){
+                List<Funcionario> lista = new ArrayList<>();
+                DaoFuncionario df=new DaoFuncionario();
+                String key=request.getParameter("cpf");
+                if(key!=null && !key.isEmpty()){// key!=null && !key.isEmpty()
+                    try {
+                    //VAI PROCURAR SE TIVER NO CAMPO CPF, SENAO, SE TIVER NO PALAVRA
+                    lista=df.busca(request.getParameter("cpf"),"cpf");
+                    } catch (SQLException ex) {
+                        Logger.getLogger(servletFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                else{
+                    try {
+                        lista=df.busca(request.getParameter("palavra"),"palavra");
+                    } catch (SQLException ex) {
+                        Logger.getLogger(servletFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                 HttpSession session = request.getSession();
+                session.setAttribute("listafunc",lista );
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+                rd.forward(request, response);  
+                //out.println(lista.get(1).getNome());
+
+            }
+        
+            if ("cadastra".equals(action)){
+                DaoFuncionario df=new DaoFuncionario();
+                Funcionario f= new Funcionario();
+                f.setNome(request.getParameter("nome1")); //nome, tipo, login, senha, cpf, email, sexo
+                f.setTipo(Integer.valueOf(String.valueOf(request.getParameter("tipo1"))));
+                f.setLogin(request.getParameter("login1"));
+                f.setSenha(request.getParameter("senha1"));
+                f.setCpf(request.getParameter("cpf1"));
+                f.setEmail(request.getParameter("email1"));
+                f.setSexo(request.getParameter("sexo1"));
+                df.add(f);    
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+                rd.forward(request, response);  
+            }
+            
+            if ("remove".equals(action)){
+                DaoFuncionario df=new DaoFuncionario();
+                Funcionario f= new Funcionario();
+                f.setCpf(request.getParameter("cpf"));
+                df.remove(f);
+                HttpSession session = request.getSession();
+                session.setAttribute("listafunc",null );
+                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+                rd.forward(request, response);  
+                
+            }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
