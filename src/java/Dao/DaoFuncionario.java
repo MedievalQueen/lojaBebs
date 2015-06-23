@@ -12,7 +12,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import pacote.Funcionario;
+import pacote.Produto;
 
 /**
  *
@@ -27,33 +30,160 @@ public class DaoFuncionario {
     
     
     
-    public List<Funcionario> busca(String cat,String ordem) throws SQLException {
+    public List<Funcionario> busca(String s,String tipo) throws SQLException {
         String query;
-        if(cat.equals("todos"))
-             query = "SELECT * FROM produto p, imagem a where p.idProduto= a.idProduto ORDER BY "+ordem;
-        else
-             query = "SELECT * FROM produto p, imagem a where p.idProduto= a.idProduto and idCategoria="+cat+" ORDER BY "+ordem;// nome ASC;  nome DESC; valor ASC; valor DESC;
-             
+        if(tipo.equals("cpf"))
+             query = "SELECT * FROM admin where cpf="+ s;
+        else//palavra
+             query = "SELECT * FROM admin WHERE nome LIKE '%"+s+"%' OR email LIKE '%"+s+"%' or login LIKE '%"+s+"%'";
         List<Funcionario> lista = new ArrayList<>();
             try {
                 con = ConnectionFactory.getConnection();
                 ptmt = con.prepareStatement(query);
                 resultSet= ptmt.executeQuery();
                 
-                while(resultSet.next()){  //idProduto, idCategoria, nome, descricao, valor, quantidade, status
-                    Funcionario p = new Funcionario();  
-
-                    p.setNome(resultSet.getString("nome"));  
-                    p.setDescricao(resultSet.getString("descricao"));
-                    p.setValor(resultSet.getFloat("valor"));
-                    p.setQuantidade(resultSet.getInt("quantidade"));
-                    p.setStatus(resultSet.getInt("status"));
- 
-                    lista.add(p);  
+                while(resultSet.next()){  
+                    Funcionario f = new Funcionario();                      
+                    f.setNome(resultSet.getString("nome"));  
+                    f.setCpf(resultSet.getString("cpf"));
+                    f.setTipo(resultSet.getInt("tipo"));
+                    f.setEmail(resultSet.getString("email"));
+                    f.setSexo(resultSet.getString("sexo"));
+                     f.setLogin(resultSet.getString("login"));
+                      f.setSenha(resultSet.getString("senha"));
+                    lista.add(f);  
                 }  
             }finally {       
             }
                 return lista;  
             
         }  
+    /*public int add(Funcionario p) {
+        		try {
+			String query = "INSERT INTO admin(nome, tipo, login, senha, cpf, email, sexo) VALUES(?,?,?,?,?,?,?)";
+			con = ConnectionFactory.getConnection();
+			ptmt = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+                        
+                        ptmt.setString(1, p.getNome());
+                         ptmt.setInt(2, p.getTipo());
+                          ptmt.setString(3, p.getLogin());
+                           ptmt.setString(4, p.getSenha());
+                            ptmt.setString(5, p.getCpf());
+                             ptmt.setString(6, p.getEmail());
+                              ptmt.setString(7, p.getSexo());
+                                                
+                        int affectedRows = ptmt.executeUpdate();
+                        if (affectedRows == 0) {
+                            throw new SQLException("Creating user failed, no rows affected.");
+                        }
+
+                        try (ResultSet generatedKeys = ptmt.getGeneratedKeys()) {
+                            if (generatedKeys.next()) {
+                                return generatedKeys.getInt(1);
+                            }
+                            else {
+                                throw new SQLException("Creating user failed, no ID obtained.");
+                            }
+                        }                      
+	}  catch (SQLException e) {
+                try {
+                    con.rollback();
+                } catch (SQLException ex) {
+                    Logger.getLogger(DaoProduto.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                 throw new RuntimeException(e);
+            }finally{
+                        try{ptmt.close();}catch (Exception ex){};
+                }
+    }*/
+    public int add(Funcionario p) {///altera ou cadastra
+        		try {
+			String query = "INSERT INTO admin(nome, tipo, login, senha, cpf, email, sexo) VALUES(?,?,?,?,?,?,?)";
+			String query1 = "update admin set nome=?,tipo=?,login=?,senha=?,email=?, sexo=? where cpf=?";
+
+                        con = ConnectionFactory.getConnection();
+			
+                        // try {
+                           // con = ConnectionFactory.getConnection();
+                            ptmt = con.prepareStatement("SELECT cpf FROM admin where cpf="+p.getCpf());
+                            resultSet= ptmt.executeQuery();
+                        // }
+                        
+                            if (!resultSet.next()) {//cadastra
+                                ptmt = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                                ptmt.setString(1, p.getNome());
+                                ptmt.setInt(2, p.getTipo());
+                                ptmt.setString(3, p.getLogin());
+                                ptmt.setString(4, p.getSenha());
+                                ptmt.setString(5, p.getCpf());
+                                ptmt.setString(6, p.getEmail());
+                                ptmt.setString(7, p.getSexo());
+
+                                int affectedRows = ptmt.executeUpdate();
+                                if (affectedRows == 0) {
+                                    throw new SQLException("Creating user failed, no rows affected.");
+                                }
+
+                                try (ResultSet generatedKeys = ptmt.getGeneratedKeys()) {
+                                    if (generatedKeys.next()) {
+                                        return generatedKeys.getInt(1);
+                                    } else {
+                                        throw new SQLException("Creating user failed, no ID obtained.");
+                                    }
+                                }
+                            } else {//atualiza
+                                ptmt = con.prepareStatement(query1);
+                                ptmt.setString(1, p.getNome());
+                                ptmt.setInt(2, p.getTipo());
+                                ptmt.setString(3, p.getLogin());
+                                ptmt.setString(4, p.getSenha());
+                              
+                                ptmt.setString(5, p.getEmail());
+                                ptmt.setString(6, p.getSexo());
+                                ptmt.setString(7, p.getCpf());
+
+                                int affectedRows = ptmt.executeUpdate();
+                                if (affectedRows == 0) {
+                                    throw new SQLException("Creating user failed, no rows affected.");
+                                }else return 1;
+
+                              
+
+                            }
+	}  catch (SQLException e) {
+                try {
+                    con.rollback();
+                } catch (SQLException ex) {
+                    Logger.getLogger(DaoProduto.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                 throw new RuntimeException(e);
+            }finally{
+                        try{ptmt.close();}catch (Exception ex){};
+                }
+    }
+     public int remove(Funcionario p) {
+         try {
+			String query = "delete from admin where cpf=?";
+			con = ConnectionFactory.getConnection();
+			ptmt = con.prepareStatement(query);
+                        
+                        ptmt.setString(1, p.getCpf());
+                                                
+                        int affectedRows = ptmt.executeUpdate();
+                        if (affectedRows == 0) {
+                            throw new SQLException("Deleting user failed, no rows affected.");
+                        }else return 1;
+                                        
+	}  catch (SQLException e) {
+                try {
+                    con.rollback();
+                } catch (SQLException ex) {
+                    Logger.getLogger(DaoProduto.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                 throw new RuntimeException(e);
+            }finally{
+                        try{ptmt.close();}catch (Exception ex){};
+                }
+     
+     }
 }

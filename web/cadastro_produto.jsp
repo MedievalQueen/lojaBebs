@@ -10,6 +10,8 @@
 <%@page import="pacote.Categoria"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<script src="js/valida.js"></script>
+
 <!DOCTYPE html>
 <div class="center_content">
 		<table border=0 style="margin:30; margin-top:30" >
@@ -18,7 +20,7 @@
 				<td>
 				<h1 >Cadastre um novo Produto</h1></br>
 					
-				    <form action="servletProduto?action=cadastrap" method="POST" onsubmit="return validacadastroentrada(this);" enctype="multipart/form-data" >	
+				    <form action="servletProduto?action=cadastrap" method="POST" onsubmit="return validaProd(this);" enctype="multipart/form-data" >	
 					<table>		
                                             <tr>	<td> Produto: </td>
 							<td>

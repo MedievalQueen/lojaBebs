@@ -32,6 +32,14 @@ public class Cliente implements Serializable {
 
     public Cliente() {
     }
+
+    public int getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
+    }
     
    
 

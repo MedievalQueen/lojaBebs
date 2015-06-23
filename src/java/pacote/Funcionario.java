@@ -19,7 +19,18 @@ public class Funcionario {
     private String sexo;
     private String cpf;
     private String email;
+    private int tipo;
 
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
+
+    
+    
     public Funcionario() {
     }
 
