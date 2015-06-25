@@ -24,7 +24,7 @@ import pacote.Venda;
  */
 public class VendaDao {
     private Connection connection = null;
-    private PreparedStatement stmt = null;
+    private PreparedStatement stmt = null; 
     private Statement comando;  
     ResultSet resultSet = null;
     
@@ -60,10 +60,7 @@ public class VendaDao {
         }
     }
     public List<Venda> faturamento() throws SQLException {
-        String query;
-       
-      
-             query = "select valor, dataPagamento from venda where pago =1 ";
+        String query = "select valor, dataPagamento from venda where pago = 1 ";
              
         List<Venda> lista = new ArrayList<>();
             try {
@@ -74,7 +71,7 @@ public class VendaDao {
                 while(resultSet.next()){  
                     Venda v = new Venda();  
                    
-                    v.setDataPagamento(resultSet.getTimestamp("dataPagamento"));
+                   v.setDataPagamento(resultSet.getTimestamp("dataPagamento"));
                     v.setValor(resultSet.getFloat("valor"));
                     
                     lista.add(v);  

@@ -8,6 +8,8 @@ import Dao.VendaDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import pacote.Venda;
 
 /**
  *
@@ -38,12 +41,51 @@ public class servletVenda extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
-
+  PrintWriter out = response.getWriter();
         if ("fatur".equals(action)){
            VendaDao vd = new VendaDao();
+           List<Venda> lista = new ArrayList<>();
           
            try {
-                request.setAttribute("listaf", vd.faturamento());
+               lista= vd.faturamento(); // out.println("passou");
+             //  request.setAttribute("listaf",lista);
+              // out.println(lista.get(1).getDataPagamento().getMonth());//março é 2
+               List<Float> meses = new ArrayList<Float>();
+               for (int i = 0; i < 12; i++) {
+                 meses.add(i, 0f);
+                }
+               for(int i=0;i<lista.size();i++){
+                   if(lista.get(i).getDataPagamento().getMonth()==0)
+                        meses.add(0, (lista.get(i).getValor()+meses.get(0)));
+                    if(lista.get(i).getDataPagamento().getMonth()==1)
+                        meses.add(1, (lista.get(i).getValor()+meses.get(1)));
+                    if(lista.get(i).getDataPagamento().getMonth()==2)
+                        meses.add(2, (lista.get(i).getValor()+meses.get(2)));
+                    if(lista.get(i).getDataPagamento().getMonth()==3)
+                        meses.add(3, (lista.get(i).getValor()+meses.get(3)));
+                    if(lista.get(i).getDataPagamento().getMonth()==4)
+                        meses.add(4, (lista.get(i).getValor()+meses.get(4)));
+                    if(lista.get(i).getDataPagamento().getMonth()==5)
+                        meses.add(5, (lista.get(i).getValor()+meses.get(5)));
+                    if(lista.get(i).getDataPagamento().getMonth()==6)
+                        meses.add(6, (lista.get(i).getValor()+meses.get(6)));
+                    if(lista.get(i).getDataPagamento().getMonth()==7)
+                        meses.add(7, (lista.get(i).getValor()+meses.get(7)));
+                    if(lista.get(i).getDataPagamento().getMonth()==8)
+                        meses.add(8, (lista.get(i).getValor()+meses.get(8)));
+                    if(lista.get(i).getDataPagamento().getMonth()==9)
+                        meses.add(9, (lista.get(i).getValor()+meses.get(9)));
+                    if(lista.get(i).getDataPagamento().getMonth()==10)
+                        meses.add(10, (lista.get(i).getValor()+meses.get(10)));
+                    if(lista.get(i).getDataPagamento().getMonth()==11)
+                        meses.add(11, (lista.get(i).getValor()+meses.get(11)));
+                    
+               }for (int i = 0; i < 12; i++) {
+                 meses.add(12, meses.get(i)+meses.get(12));
+                }
+            //   out.println(meses.get(2));
+               
+               request.setAttribute("listaf",meses);
             } catch (SQLException ex) {
                 Logger.getLogger(servletLogar.class.getName()).log(Level.SEVERE, null, ex);
                 

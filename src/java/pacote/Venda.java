@@ -6,6 +6,7 @@
 package pacote;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -21,9 +22,9 @@ public class Venda implements Serializable {
     float valor;
     boolean pago;
     String formaDePagamento;
-    Date dataPagamento;
+    Timestamp dataPagamento;
     boolean enviado;
-    Date dataEnvio;
+    Timestamp dataEnvio;
 
     public Venda() {
     }
@@ -96,7 +97,7 @@ public class Venda implements Serializable {
         return dataPagamento;
     }
 
-    public void setDataPagamento(Date dataPagamento) {
+    public void setDataPagamento(Timestamp dataPagamento) {
         this.dataPagamento = dataPagamento;
     }
 
@@ -112,7 +113,7 @@ public class Venda implements Serializable {
         return dataEnvio;
     }
 
-    public void setDataEnvio(Date dataEnvio) {
+    public void setDataEnvio(Timestamp dataEnvio) {
         this.dataEnvio = dataEnvio;
     }
     
