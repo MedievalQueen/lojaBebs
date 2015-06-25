@@ -10,7 +10,7 @@
 <br />
 					<a href="redir_relatorios.jsp"> Relatório de Cliente</a>&nbsp;
 					<a href="redir_produtos.jsp"> Relatório de Produtos</a>&nbsp;
-					<a href="redir_faturamento.jsp"> Faturamento da loja</a>&nbsp;
+					<a href="servletVenda?action=fatur" formmethod="post"> Faturamento da loja</a>&nbsp;
 					<a href="redir_cli5.jsp"> Clientes que mais compraram</a>
 					<br /><br />
 <h3>Produto mais vendido em um período do ano especificado:</h3><br/>
